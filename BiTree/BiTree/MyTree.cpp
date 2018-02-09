@@ -15,20 +15,29 @@ class SearchTree
 {
 public:
 	SearchTree(int*s,int lenth);
+	SearchTree();
+	void Ergodic();
+	void Ergodic(Node*ptr);//遍历整个树
 	bool Insert_Key(int key);
-	bool Find_Key(int key, Node**ptr, Node**parent, Node**current);
+	bool Search_Key(int key, Node**current);//简化需要的参数更安全
+	bool Remove_Key(int key);//去除一个键值
 private:
-	Node*Root;
+    Node*Root;
+	bool Find_Key(int key, Node**ptr, Node**parent, Node**current);//内部使用 用于查询节点
 };
+
+SearchTree::SearchTree()
+{
+	
+}
 
 SearchTree::SearchTree(int *s, int lenth)
 {
 	for (int i = 0; i < lenth; i++)
 		Insert_Key(s[i]);
-	cout << "compelet!" << endl;
 }
 
-bool SearchTree::Find_Key(int key, Node**ptr, Node**parent, Node**current)
+bool SearchTree::Find_Key(int key, Node**ptr=NULL, Node**parent=NULL, Node**current=NULL)
 {
 	if (*ptr == NULL)
 	{
@@ -55,6 +64,7 @@ bool SearchTree::Find_Key(int key, Node**ptr, Node**parent, Node**current)
 		Find_Key(key, &(*ptr)->rchild, ptr, current);
 	}
 }
+
 
 bool SearchTree::Insert_Key(int key)
 {
@@ -90,9 +100,40 @@ bool SearchTree::Insert_Key(int key)
 	}
 }
 
+bool SearchTree::Search_Key(int key, Node**current)
+{
+	return Find_Key(key, &Root, NULL, current);
+}
+
+bool SearchTree::Remove_Key(int key)
+{
+	return true;
+}
+
+void SearchTree::Ergodic()
+{
+	Ergodic(Root);
+}
+
+void SearchTree::Ergodic(Node*ptr)
+{
+	if (ptr == NULL)
+	{
+		cout << "# ";
+	}
+	else
+	{
+		cout << ptr->date << " ";
+		Ergodic(ptr->lchild);
+		Ergodic(ptr->rchild);
+	}
+}
+
 int main()
 {
 	int s[10] = { 4, 2, 1, 5, 6, 3, 0, 7, 9, 8 };
 	SearchTree x = SearchTree(s, 10);
+	x.Ergodic();
+
 	_getch();
 }
